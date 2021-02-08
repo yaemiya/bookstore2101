@@ -1,3 +1,7 @@
+@extends('layouts.app')
+
+@section('content')
+
 {{ $name }}様
 
 BOOKSTOREをご利用いただきまして誠にありがとうございます。
@@ -60,3 +64,5 @@ BOOKSTOREをご利用いただきまして誠にありがとうございます�
  発送手配が整い次第、別途メールにてご連絡いたします。
 
 WEB：https://bookstore2101.herokuapp.com/
+
+@endsection
