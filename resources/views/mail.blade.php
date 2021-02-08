@@ -1,68 +1,106 @@
-@extends('layouts.app')
-
-@section('content')
-
-{{ $name }}様
-
-BOOKSTOREをご利用いただきまして誠にありがとうございます。
-下記の内容をご確認ください。
-
-注文内容
-注文日：{{ $order_date }}
-注文完了商品：
-<table class="table table-bordered border-secondary responsive bg-light confirm">
-    <thead class="text-center">
-        <th class="align-middle">商品名</th>
-        <th class="align-middle">数量</th>
-        <th class="align-middle">価格<br>（税抜）</th>
-        <th class="align-middle">小計<br>（税抜）</th>
-    </thead>
-    <tbody class="text-center">
+<div style="color:black; background-color:white;">
+    {{ $name }}様
+    <br>
+    <br>
+    この度はBOOKSTOREをご利用いただきまして誠にありがとうございます。
+    <br>
+    下記の内容をご確認ください。
+    <br>
+    <br>
+    <hr>
+    ご注文内容
+    <hr>
+    ご注文日：{{ $order_date }}
+    <br>
+    ご注文商品：{{ $total_quantity }}点
+    <hr>
+    <table>
+        <tr>
+            <td style="text-align: center;">商品名</td>
+            <td style="text-align: right;">　　数量</td>
+            <td style="text-align: right;">　　価格(税抜)</td>
+            <td style="text-align: right;">　　小計(税抜)</td>
+        </tr>
+        <tr>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+        </tr>
         @foreach( $carts as $cart)
         <tr>
-            <td class="align-middle">
+            <td style="text-align: center;">
                 {{ $cart->name }}
             </td>
-            <td class="align-middle">
+            <td style="text-align: right;">
                 {{ $cart->quantity }}
             </td>
-            <td class="align-middle">
+            <td style="text-align: right;">
                 {{ $cart->price }}円</td>
-            <td class="align-middle">
+            <td style="text-align: right;">
                 {{ $cart->price * $cart->quantity }}円
             </td>
         </tr>
         @endforeach
-    </tbody>
-    <tbody class="text-center table-bordered">
-        <tr class="nohover">
-            <td class="border-0 nohover"></td>
-            <td class="border-0 nohover"></td>
-            <td class="border-0 nohover"></td>
-            <td class="border-0 nohover"></td>
+        <tr>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
         </tr>
-        <tr class="nohover">
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0 align-middle">小計<br>（税抜）</td>
-            <td class="border-0 align-middle">{{ $sub_total }}円</td>
+        <tr style="">
+            <td style=""></td>
+            <td style=""></td>
+            <td style=" text-align: right;">　　小計(税抜)</td>
+            <td style=" text-align: right;">{{ $sub_total }}円</td>
         </tr>
-        <tr class="nohover">
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0">消費税</td>
-            <td class="border-0">{{ floor($sub_total * 0.1) }}円</td>
-        <tr class="nohover">
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0 total">合計</td>
-            <td class="border-0 total">{{ floor($sub_total * 1.1) }}円</td>
+        <tr style="">
+            <td style=""></td>
+            <td style=""></td>
+            <td style="text-align: right;">消費税</td>
+            <td style="text-align: right;">{{ floor($sub_total * 0.1) }}円</td>
+        <tr>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
+            <td>
+                <hr>
+            </td>
         </tr>
-    </tbody>
-</table>
-
- 発送手配が整い次第、別途メールにてご連絡いたします。
-
-WEB：https://bookstore2101.herokuapp.com/
-
-@endsection
+        <tr style="">
+            <td style=""></td>
+            <td style=""></td>
+            <td style="text-align: right;">合計</td>
+            <td style="text-align: right;">{{ floor($sub_total * 1.1) }}円</td>
+        </tr>
+    </table>
+    <hr>
+    <br>
+    <br>
+    発送手配が整い次第、別途メールにてご連絡いたします。
+    <br>
+    <br>
+    WEB：https://bookstore2101.herokuapp.com/
+</div>

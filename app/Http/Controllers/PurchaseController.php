@@ -164,13 +164,16 @@ class PurchaseController extends Controller
 
         // 小計
         $sub_total = 0;
+        // 総オーダー商品数
+        $total_quantity = 0;
         foreach ($carts as $cart) {
             $sub_total += $cart->price * $cart->quantity;
+            $total_quantity += $cart->quantity;
         }
 
         //メール送信
-        Mail::send(new Purchase($name, $order_date, $carts, $sub_total));
+        Mail::send(new Purchase($name, $order_date, $carts, $sub_total, $total_quantity));
 
-        return view('checkout', compact('name', 'order_date', 'carts', 'sub_total'));
+        return view('checkout', compact('name', 'order_date', 'carts', 'sub_total', 'total_quantity'));
     }
 }
