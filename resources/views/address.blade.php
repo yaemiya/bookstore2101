@@ -3,7 +3,7 @@
 @section('content')
 <div class="container justify-content-center">
     <div class="card mt-3">
-        <div class="card-header p-4 text-center bg-secondary text-light h3">お届け先情報入力</div>
+        <div class="card-header p-4 text-center bg-secondary text-light h3">お届け先情報</div>
         <div class="cart_container">
             <form method="post" action="address_control">
                 @csrf

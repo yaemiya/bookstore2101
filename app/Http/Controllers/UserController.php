@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Address;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -45,6 +46,7 @@ class UserController extends Controller
                 [
                 'name' => $request->name,
                 'email' => $request->email,
+                'password' => Hash::make($request->password),
                 'postal_code' => $request->postal_code,
                 'region' => $request->region,
                 'address' => $request->address,

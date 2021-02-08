@@ -74,8 +74,8 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
                             <div class="text-right">
-                                <a href="login/google" type="button" class="btn btn-success">
-                                    {{ __('Googleでログイン') }}
+                                <a href="login/google" type="button" class="btn btn-danger">
+                                    <i class="fab fa-google"></i>{{ '　Googleでログイン' }}
                                 </a>
                             </div>
                         </div>

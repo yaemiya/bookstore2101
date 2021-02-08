@@ -16,32 +16,21 @@
                         <div class="form-group row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <label for="name" class="col-form-label">{{ __('お名前（必須）') }}</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                    name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                <label for="name" class="col-form-label">お名前</label>
+                                <input type="text" class="form-control @error('postal_code') is-invalid @enderror"
+                                    name="name" autocomplete="namepostal_code" autofocus placeholder="必須">
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <label for="email" class="col-form-label">{{ __('メールアドレス（必須）') }}</label>
-
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                    name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                <label for="email" class="col-form-label">メールアドレス</label>
+                                <input type="text" class="form-control @error('postal_code') is-invalid @enderror"
+                                    name="email" autocomplete="email" autofocus placeholder="必須">
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
@@ -58,6 +47,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
@@ -84,14 +74,14 @@
                                 <label for="postal_code" class="col-form-label">{{ __('郵便番号') }}</label>
                                 <input id="postal_code" type="text"
                                     class="form-control @error('postal_code') is-invalid @enderror" name="postal_code"
-                                    value="{{ old('postal_code') }}" autocomplete="postal_code" autofocus
-                                    placeholder="半角英数字7桁">
+                                    maxlength="8" autocomplete=" postal_code" autofocus placeholder="必須、ハイフン任意"
+                                    onKeyUp="AjaxZip3.zip2addr(this,'','region','address');">
 
-                                @error('region')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                {{-- @error('region')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
                                 </span>
-                                @enderror
+                                @enderror --}}
                             </div>
                         </div>
 
@@ -99,10 +89,11 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
                                 <label for="region" class="col-form-label">{{ __('都道府県') }}</label>
-
-                                <select class="form-control @error('region') is-invalid @enderror"
-                                    value="{{ old('region') }}" autocomplete="region" autofocus>
-                                    <option>Default select</option>
+                                <select name="region" class="form-control">
+                                    <option>-- 選択してください --</option>
+                                    @foreach(config('prefs') as $pref)
+                                    <option value="{{ $pref }}">{{ $pref }}</option>
+                                    @endforeach
                                 </select>
 
                                 @error('region')
@@ -116,34 +107,34 @@
                         <div class="form-group row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <label for="address" class="col-form-label">{{ __('住所') }}</label>
+                                <label for="address" class="col-form-label">住所</label>
 
                                 <input id="address" type="text"
                                     class="form-control @error('address') is-invalid @enderror" name="address"
-                                    value="{{ old('address') }}" autocomplete="address">
+                                    autocomplete="address" placeholder="必須">
 
-                                @error('address')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                {{-- @error('address')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
                                 </span>
-                                @enderror
+                                @enderror --}}
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <label for="building" class="col-form-label">{{ __('建物') }}</label>
+                                <label for="building" class="col-form-label">建物</label>
 
                                 <input id="building" type="text"
                                     class="form-control @error('building') is-invalid @enderror" name="building"
-                                    autocomplete="building">
+                                    autocomplete="building" placeholder="任意">
 
-                                @error('building')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                {{-- @error('building')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
                                 </span>
-                                @enderror
+                                @enderror --}}
                             </div>
                         </div>
 
@@ -152,11 +143,10 @@
                             <div class="col-md-10">
                                 <label for="tel" class="col-form-label">{{ __('電話番号') }}</label>
 
-                                <input id="tel" type="tel" class="form-control" name="tel" autocomplete="tel"
-                                    placeholder="半角数字10桁または11桁（ハイフンなし）">
+                                <input id="tel" type="tel" class="form-control" name="tel" autocomplete=" tel"
+                                    placeholder="必須、半角数字10桁または11桁（ハイフンなし）">
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -165,11 +155,12 @@
         <br>
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <button type="submit" class="btn btn-primary btn-block">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
                     {{ __('新規登録') }}
                 </button>
             </div>
         </div>
     </form>
 </div>
+<br>
 @endsection
