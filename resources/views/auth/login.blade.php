@@ -70,16 +70,14 @@
                         </div>
                     </form>
                     <br>
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
-                            <form method="POST" action="">
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-success">
-                                        {{ __('Googleでログイン') }}
-                                    </button>
-                                </div>
-                            </form>
+                            <div class="text-right">
+                                <a href="login/google" type="button" class="btn btn-success">
+                                    {{ __('Googleでログイン') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <br>

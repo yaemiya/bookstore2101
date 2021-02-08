@@ -171,16 +171,5 @@
             </div>
         </div>
     </form>
-    <br>
-    <form method="POST" action="">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 text-right">
-                <button type="submit" class="btn btn-success">
-                    {{ __('Googleで登録') }}
-                </button>
-            </div>
-        </div>
-    </form>
 </div>
 @endsection

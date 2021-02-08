@@ -12,6 +12,8 @@
 */
 
 Auth::routes();
+Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
+Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
 
 Route::get('/', 'BookController@index');
 Route::get('books_genre', 'BookController@booksGenre');

@@ -12,6 +12,7 @@
         "barryvdh/laravel-debugbar": "^3.5",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
+        "laravel/socialite": "^5.1",
         "laravel/tinker": "^1.0"
     },
     "require-dev": {
