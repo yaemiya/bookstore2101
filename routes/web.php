@@ -15,7 +15,12 @@ Auth::routes();
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
 
-Route::get('/', 'BookController@index');
+Route::get('auth/edit', 'UserController@edit')->name('auth.edit');
+Route::post('auth/update', 'UserController@update');
+Route::get('auth/delete', 'UserController@show')->name('auth.delete');
+Route::get('auth/destroy', 'UserController@destroy')->name('auth_destroy');
+
+Route::get('/', 'BookController@index')->name('index');
 Route::get('books_genre', 'BookController@booksGenre');
 Route::get('comics_genre', 'BookController@comicsGenre');
 Route::get('magazines_genre', 'BookController@magazinesGenre');
@@ -24,18 +29,13 @@ Route::get('search', 'BookController@search');
 Route::get('ranking_order', 'BookController@rankingOrder');
 Route::get('issue_date_order', 'BookController@issueDateOrder');
 Route::get('price_order', 'BookController@priceOrder');
-Route::get('cart', 'CartController@index');
+Route::get('book/{book}', 'BookController@show')->name('book');
+Route::get('cart', 'CartController@index')->name('cart');
+
 Route::post('cart_update', 'CartController@update')->name('update');
-
 Route::delete('cart/{cart}', 'CartController@destroy')->name('delete');
-Route::post('cart_store', 'CartController@store');
+Route::post('cart_store', 'CartController@store')->name('cart_store');
 
-Route::post('address_edit', 'PurchaseController@edit')->name('address_edit');
+Route::match(['get', 'post'], 'address_edit', 'PurchaseController@edit')->name('address_edit');
 Route::post('address_control', 'PurchaseController@address_control');
 Route::get('checkout', 'PurchaseController@checkout');
-
-
-Route::get('{book}', 'BookController@show');
-
-Route::get('auth/edit', 'UserController@edit')->name('auth.edit');
-Route::post('auth/update', 'UserController@update');

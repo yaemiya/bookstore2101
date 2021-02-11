@@ -52,7 +52,7 @@
                         <br>
                         <div class="cart_btn mb-3">
                             @unless (Session::has('cart_store'))
-                            <form method="post" action="cart_store">
+                            <form method="post" action="{{ route('cart_store') }}">
                                 @csrf
                                 <input type="hidden" name="name" value="{{ $book->name }}">
                                 <input type="hidden" name="issue_date" value="{{ $book->issue_date }}">

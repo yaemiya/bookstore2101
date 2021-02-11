@@ -39,8 +39,8 @@
                                 <a class="carts" href="{{ $cart->book_id }}">{{ $cart->name }}</a>
                             </td>
                             <td class="align-middle">
-                                <input type="number" form="quantity" class="text-center quantity" name="quantity[]"
-                                    value="{{ $cart->quantity }}">
+                                <input type="number" min="1" form="quantity" class="text-center quantity"
+                                    name="quantity[]" value="{{ $cart->quantity }}">
                                 <input type="hidden" form="quantity" name="id[]" value="{{ $cart->id }}">
                             </td>
                             <td class="align-middle">{{ floor($cart->price) }}円</td>
@@ -50,7 +50,8 @@
                                 <form method="post" action="{{ route('delete', $cart->id)}}">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-danger">削除する</button>
+                                    <button type="submit" class="btn btn-outline-danger"
+                                        onclick="return confirm('削除します。よろしいですか？');">削除する</button>
                                 </form>
                             </td>
                         </tr>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Address;
-use App\Book;
+use App\User;
 use App\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,34 +12,40 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Purchase;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class PurchaseController extends Controller
 {
     // お届け先情報入力画面表示
     public function edit(Request $request)
     {
-        // カートテーブル更新
-        $carts = array(
-            'id' => $request->input('id'),
-            'quantity' => $request->input('quantity')
-         );
-        for ($i=0; $i<count($carts['id']); $i++) {
-            DB::table('carts')
-            ->where('id', $carts['id'][$i])
-            ->update(['quantity'=> $carts['quantity'][$i]]);
-        }
+        // if (!$request->session()->has('validate')) {
 
-        $address = Address::select()
-            ->join('users', 'users.id', '=', 'addresses.user_id')
-            ->find(1);
+        //     // カートテーブル更新
+        //     $carts = array(
+        //         'id' => $request->input('id'),
+        //         'quantity' => $request->input('quantity')
+        //  );
+        //     for ($i=0; $i<count($carts['id']); $i++) {
+        //         DB::table('carts')
+        //      ->where('id', $carts['id'][$i])
+        //      ->update(['quantity'=> $carts['quantity'][$i]]);
+        //     }
+        // }
+
+        $addresses = Address::select()
+        ->join('users', 'users.id', '=', 'addresses.user_id')
+        ->where('users.id', Auth::id())
+        ->first();
         if (Auth::check()) {
             $name = Auth::user()->name;
             $email = Auth::user()->email;
-            $building = $address->building;
-            $tel = $address->tel;
-            $postal_code = $address->postal_code;
-            $region = $address->region;
-            $address = $address->address;
+            $postal_code = $addresses->postal_code ?? '';
+            $region = $addresses->region ?? '';
+            $address = $addresses->address ?? '';
+            $building = $addresses->building ?? '';
+            $tel = $addresses->tel ?? '';
             return view('address', compact('name', 'email', 'postal_code', 'region', 'address', 'building', 'tel'));
         } else {
             return view('address');
@@ -49,23 +55,50 @@ class PurchaseController extends Controller
     // 住所情報の登録・更新処理制御〜注文確認画面表示
     public function address_control(Request $request)
     {
+        // バリデーション
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:30'],
+            'email' => ['required', 'string', 'email', 'max:100'],
+            'postal_code' => ['required', 'string', 'digits:7'],
+            'address' => ['required', 'string'],
+            'tel' => ['required', 'string', 'digits_between:10,11'],
+        ]);
+
+        // バリデーションエラーだった場合
+        if ($validator->fails()) {
+            // $request->session()->flash('validate');
+            return redirect()
+                ->route('address_edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        
+        // Nullエラー防止
+        if (empty($request->building)) {
+            $request->building = '';
+        }
+
         // ログイン中で保存チェックボックスにチェック時ーアドレス保存
         if (Auth::check() && $request->has('address_reserve')) {
-            $address = Address::updateOrCreate(
+            User::where('id', Auth::id())->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+
+            Address::updateOrCreate(
                 [
                 'user_id' => Auth::id(),
                 ],
                 [
-                'name' => $request->name,
-                'email' => $request->email,
                 'postal_code' => $request->postal_code,
                 'region' => $request->region,
                 'address' => $request->address,
                 'building' => $request->building,
                 'tel' => $request->tel,
-                'user_id' => Auth::id(),
+                // 'user_id' => Auth::id(),
                 ]
             );
+
             $carts = Cart::where('user_id', Auth::id())
             ->get();
             // 小計

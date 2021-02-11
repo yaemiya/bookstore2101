@@ -94,7 +94,7 @@
         <br>
         <div class="text-center mt-5">
             <a class="btn btn-block btn-lg btn-primary d-flex align-items-center justify-content-center p-3"
-                type="submit" href="checkout">ご注文を確定する</a>
+                type="submit" href="checkout" onclick="return confirm('ご注文を確定します。よろしいですか？');">ご注文を確定する</a>
         </div>
         <div class="row">
             <div class="col-6 text-center mt-5">

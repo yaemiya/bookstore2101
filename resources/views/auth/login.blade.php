@@ -17,8 +17,9 @@
                             <div class="col-md-10">
                                 <label for="email" class="col-form-label">{{ __('メールアドレス') }}</label>
 
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                    name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="text" maxlength="100"
+                                    class="form-control @error('email') is-invalid @enderror" name="email"
+                                    value="{{ old('email') }}" autocomplete="email" autofocus>
 
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -35,7 +36,7 @@
 
                                 <input id="password" type="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
-                                    required autocomplete="current-password">
+                                    autocomplete="current-password">
 
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -75,7 +76,7 @@
                         <div class="col-md-10">
                             <div class="text-right">
                                 <a href="login/google" type="button" class="btn btn-danger">
-                                    <i class="fab fa-google"></i>{{ '　Googleでログイン' }}
+                                    {{ 'Googleでログイン' }}
                                 </a>
                             </div>
                         </div>
@@ -86,6 +87,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-10 text-right">
+            <a href="{{ route('index') }}" class="text-secondary">トップページにもどる</a>
+        </div>
+        <div class="col-2">
         </div>
     </div>
 </div>

@@ -19,7 +19,8 @@
         @foreach ($books as $book)
         <div class="col-md-3 mb-3">
             <div class="card">
-                <a href="{{ $book->id }}" class="book-card">
+                <a href="book/{{ $book->id }}" class="book-card">
+                    {{-- <a href="{{ route('book_detail', ['id' => $book->id]) }}" class="book-card"> --}}
                     <div class="card-body text-center">
                         <h5>{{ $book->name }}</h5>
                         <br>

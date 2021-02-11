@@ -31,7 +31,7 @@
     <div id="app">
         <div class="mt-3 container">
             {{-- 会員名 --}}
-            <div class="text-right text-dark">
+            <div class="text-right text-dark lead">
                 @auth
                 {{Auth::user()->name }}さん
                 @else
@@ -69,24 +69,28 @@
                                 <a class="dropdown-item" href="{{ route('login') }}">{{ __('ログイン') }}</a>
                                 {{-- 新規会員登録 --}}
                                 @if (Route::has('register'))
-                                <a class="dropdown-item" href="{{ route('register') }}">{{ __('新規会員登録') }}</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">{{ __('アカウント新規登録') }}</a>
                                 @endif
                                 {{-- ログイン時 --}}
                                 @else
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    {{-- アカウント情報編集 --}}
-                                    <a class="dropdown-item" href="{{ route('auth.edit') }}">
-                                        {{ __('会員情報編集') }}
-                                    </a>
                                     {{-- ログアウト --}}
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('ログアウト') }}
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        style="display: none;">
-                                        @csrf
-                                    </form>
+                                    {{-- アカウント情報編集 --}}
+                                    <a class="dropdown-item" href="{{ route('auth.edit') }}">
+                                        {{ __('アカウント編集') }}
+                                    </a>
+                                    {{-- アカウント情報削除 --}}
+                                    <a class="dropdown-item" href="{{ route('auth.delete') }}">
+                                        {{ __('アカウント削除') }}
+                                    </a>
+                                    {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                    </form> --}}
                                 </div>
                         </li>
                         @endguest

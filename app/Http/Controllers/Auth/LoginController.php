@@ -34,10 +34,18 @@ class LoginController extends Controller
      *
      * @return void
      */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'email' => ['required', 'string', 'email', 'max:10', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
+
 
     public function redirectToGoogle()
     {
