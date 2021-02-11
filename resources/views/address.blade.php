@@ -13,8 +13,7 @@
                         <div class="col-md-10">
                             <label for="name" class="col-form-label">お名前</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                @if(!empty($name)) value="{{ old('name', $name) }}" @endif autocomplete="name" autofocus
-                                placeholder="必須">
+                                value="{{ old('name', $name) }}" autocomplete="name" autofocus placeholder="必須">
 
                             @error('name')
                             <span class="invalid-feedback" role="alert">
@@ -29,8 +28,7 @@
                         <div class="col-md-10">
                             <label for="email" class="col-form-label">メールアドレス</label>
                             <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
-                                @if(!empty($email)) value="{{ old('email', $email) }}" @endif autocomplete="email"
-                                autofocus placeholder="必須">
+                                value="{{ old('email', $email) }}" autocomplete="email" autofocus placeholder="必須">
 
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -46,8 +44,8 @@
                             <label for="postal_code" class="col-form-label">{{ __('郵便番号') }}</label>
                             <input id="postal_code" type="text"
                                 class="form-control @error('postal_code') is-invalid @enderror" name="postal_code"
-                                @if(!empty($postal_code)) value="{{ old('postal_code', $postal_code) }}" @endif
-                                maxlength="7" autocomplete=" postal_code" autofocus placeholder="必須、半角数字、ハイフンなし"
+                                value="{{ old('postal_code', $postal_code) }}" maxlength="7" autocomplete=" postal_code"
+                                autofocus placeholder="必須、半角数字、ハイフンなし"
                                 onKeyUp="AjaxZip3.zip2addr(this,'','region','address');">
 
                             @error('postal_code')
@@ -62,10 +60,11 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
                             <label for="region" class="col-form-label">{{ __('都道府県') }}</label>
-                            <select name="region" class="form-control" id="region">
+                            <select name="region" class="form-control @error('region') is-invalid @enderror"" id="
+                                region">
                                 <option value="">-- 選択してください --</option>
                                 @foreach(config('prefs') as $pref)
-                                @if (!empty($region) && old('region', $region) === $pref)
+                                @if (old('region', $region) === $pref)
                                 <option value="{{ $pref }}" selected="selected">{{ $pref }}</option>
                                 @else
                                 <option value="{{ $pref }}">{{ $pref }}</option>
@@ -86,8 +85,8 @@
                         <div class="col-md-10">
                             <label for="address" class="col-form-label">住所</label>
                             <input id="address" type="text" class="form-control @error('address') is-invalid @enderror"
-                                name="address" @if(!empty($address)) value="{{ old('address', $address) }}" @endif
-                                autocomplete="address" placeholder="必須">
+                                name="address" value="{{ old('address', $address) }}" autocomplete="address"
+                                placeholder="必須">
 
                             @error('address')
                             <span class="invalid-feedback" role="alert">
@@ -103,8 +102,7 @@
                             <label for="building" class="col-form-label">建物</label>
                             <input id="building" type="text"
                                 class="form-control @error('building') is-invalid @enderror" name="building"
-                                @if(!empty($building)) value="{{ old('building', $building) }}" @endif
-                                autocomplete="building">
+                                value="{{ old('building', $building) }}" autocomplete="building">
 
                             @error('building')
                             <span class="invalid-feedback" role="alert">
@@ -120,7 +118,7 @@
                             <label for="tel" class="col-form-label">{{ __('電話番号') }}</label>
 
                             <input id="tel" type="string" class="form-control @error('tel') is-invalid @enderror"
-                                name="tel" @if(!empty($tel)) value="{{ old('tel', $tel) }}" @endif autocomplete="tel"
+                                name="tel" value="{{ old('tel', $tel) }}" autocomplete="tel"
                                 placeholder="必須、半角数字10桁または11桁、ハイフンなし" maxlength="11">
 
                             @error('tel')

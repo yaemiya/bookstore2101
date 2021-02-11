@@ -99,11 +99,11 @@
         <div class="row">
             <div class="col-6 text-center mt-5">
                 <a class="btn btn-block btn-secondary d-flex align-items-center justify-content-center p-3"
-                    type="submit" href="cart">ご注文内容を修正する</a>
+                    href="cart">ご注文内容を修正する</a>
             </div>
             <div class="col-6 text-center mt-5">
-                <button class="btn btn-block btn-secondary d-flex align-items-center justify-content-center p-3"
-                    type="submit" onclick="history.back()">お届け先情報を修正する</button>
+                <a class="btn btn-block btn-secondary d-flex align-items-center justify-content-center p-3"
+                    href="{{ route('address_edit') }}">お届け先情報を修正する</a>
             </div>
         </div>
     </div>

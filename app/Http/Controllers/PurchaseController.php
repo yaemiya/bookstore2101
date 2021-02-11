@@ -20,36 +20,71 @@ class PurchaseController extends Controller
     // お届け先情報入力画面表示
     public function edit(Request $request)
     {
-        // if (!$request->session()->has('validate')) {
-
-        //     // カートテーブル更新
-        //     $carts = array(
-        //         'id' => $request->input('id'),
-        //         'quantity' => $request->input('quantity')
-        //  );
-        //     for ($i=0; $i<count($carts['id']); $i++) {
-        //         DB::table('carts')
-        //      ->where('id', $carts['id'][$i])
-        //      ->update(['quantity'=> $carts['quantity'][$i]]);
-        //     }
-        // }
-
         $addresses = Address::select()
         ->join('users', 'users.id', '=', 'addresses.user_id')
         ->where('users.id', Auth::id())
         ->first();
-        if (Auth::check()) {
+        // 宛名
+        if (session()->has('ad_name')) {
+            $name = session()->get('ad_name');
+        } elseif (Auth::check()) {
             $name = Auth::user()->name;
-            $email = Auth::user()->email;
-            $postal_code = $addresses->postal_code ?? '';
-            $region = $addresses->region ?? '';
-            $address = $addresses->address ?? '';
-            $building = $addresses->building ?? '';
-            $tel = $addresses->tel ?? '';
-            return view('address', compact('name', 'email', 'postal_code', 'region', 'address', 'building', 'tel'));
         } else {
-            return view('address');
+            $name = '';
         }
+        // メールアドレス
+        if (session()->has('email')) {
+            $email = session()->get('email');
+        } elseif (Auth::check()) {
+            $email = Auth::user()->email;
+        } else {
+            $email = '';
+        }
+        // 郵便番号
+        if (session()->has('postal_code')) {
+            $postal_code = session()->get('postal_code');
+        } elseif (!empty($addresses->postal_code)) {
+            $postal_code = $addresses->postal_code;
+        } else {
+            $postal_code = '';
+        }
+        // 都道府県
+        if (session()->has('region')) {
+            $region = session()->get('region');
+        } elseif (!empty($addresses->region)) {
+            $region = $addresses->region;
+        } else {
+            $region = '';
+        }
+        // 住所
+        if (session()->has('address')) {
+            $address = session()->get('address');
+        } elseif (!empty($addresses->address)) {
+            $address = $addresses->address;
+        } else {
+            $address = '';
+        }
+        // 建物
+        if (session()->has('building')) {
+            $building = session()->get('building');
+        } elseif (!empty($addresses->building)) {
+            $building = $addresses->building;
+        } else {
+            $building = '';
+        }
+        // 電話番号
+        if (session()->has('tel')) {
+            $tel = session()->get('tel');
+        } elseif (!empty($addresses->tel)) {
+            $tel = $addresses->tel;
+        } else {
+            $tel = '';
+        }
+
+        return view('address', compact('name', 'email', 'postal_code', 'region', 'address', 'building', 'tel'));
+        // } else {
+        //     return view('address');
+        // }
     }
 
     // 住所情報の登録・更新処理制御〜注文確認画面表示
@@ -60,13 +95,13 @@ class PurchaseController extends Controller
             'name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'string', 'email', 'max:100'],
             'postal_code' => ['required', 'string', 'digits:7'],
+            'region' =>['required'],
             'address' => ['required', 'string'],
             'tel' => ['required', 'string', 'digits_between:10,11'],
         ]);
 
         // バリデーションエラーだった場合
         if ($validator->fails()) {
-            // $request->session()->flash('validate');
             return redirect()
                 ->route('address_edit')
                 ->withErrors($validator)
@@ -95,7 +130,6 @@ class PurchaseController extends Controller
                 'address' => $request->address,
                 'building' => $request->building,
                 'tel' => $request->tel,
-                // 'user_id' => Auth::id(),
                 ]
             );
 
@@ -109,12 +143,12 @@ class PurchaseController extends Controller
 
             // 住所をセッションに保存
             $request->session()->put('ad_name', $request->name);
-            $request->session()->flash('email', $request->email);
-            $request->session()->flash('postal_code', $request->postal_code);
-            $request->session()->flash('region', $request->region);
-            $request->session()->flash('address', $request->address);
-            $request->session()->flash('building', $request->building);
-            $request->session()->flash('tel', $request->tel);
+            $request->session()->put('email', $request->email);
+            $request->session()->put('postal_code', $request->postal_code);
+            $request->session()->put('region', $request->region);
+            $request->session()->put('address', $request->address);
+            $request->session()->put('building', $request->building);
+            $request->session()->put('tel', $request->tel);
 
 
             return view('confirm', compact('carts', 'sub_total'));
@@ -133,12 +167,12 @@ class PurchaseController extends Controller
 
                 // 住所をセッションに保存
                 $request->session()->put('ad_name', $request->name);
-                $request->session()->flash('email', $request->email);
-                $request->session()->flash('postal_code', $request->postal_code);
-                $request->session()->flash('region', $request->region);
-                $request->session()->flash('address', $request->address);
-                $request->session()->flash('building', $request->building);
-                $request->session()->flash('tel', $request->tel);
+                $request->session()->put('email', $request->email);
+                $request->session()->put('postal_code', $request->postal_code);
+                $request->session()->put('region', $request->region);
+                $request->session()->put('address', $request->address);
+                $request->session()->put('building', $request->building);
+                $request->session()->put('tel', $request->tel);
 
                 return view('confirm', compact('carts', 'sub_total'));
 
@@ -154,12 +188,12 @@ class PurchaseController extends Controller
 
                 // 住所をセッションに保存
                 $request->session()->put('ad_name', $request->name);
-                $request->session()->flash('email', $request->email);
-                $request->session()->flash('postal_code', $request->postal_code);
-                $request->session()->flash('region', $request->region);
-                $request->session()->flash('address', $request->address);
-                $request->session()->flash('building', $request->building);
-                $request->session()->flash('tel', $request->tel);
+                $request->session()->put('email', $request->email);
+                $request->session()->put('postal_code', $request->postal_code);
+                $request->session()->put('region', $request->region);
+                $request->session()->put('address', $request->address);
+                $request->session()->put('building', $request->building);
+                $request->session()->put('tel', $request->tel);
 
                 return view('confirm', compact('carts', 'sub_total'));
             }
@@ -170,11 +204,11 @@ class PurchaseController extends Controller
     public function checkout()
     {
         // メール宛名
-        if (Auth::check()) {
-            $name = Auth::user()->name;
-        } else {
-            $name = session()->get('ad_name');
-        }
+        // if (Auth::check()) {
+        //     $name = Auth::user()->name;
+        // } else {
+        $name = session()->get('ad_name');
+        // }
 
         // メール注文日
         $today = Carbon::today();
@@ -185,14 +219,18 @@ class PurchaseController extends Controller
         $session_id = session()->getId();
         if (!Auth::check()) {
             $carts = Cart::select('id', 'name', 'quantity', 'price', 'book_id')
-        ->where('session_id', $session_id)
-        ->get();
+            ->where('session_id', $session_id)
+            ->get();
+            // カート削除
+            $cs = Cart::where('session_id', $session_id)->delete();
         
         // ログイン中
         } else {
             $carts = Cart::select('id', 'name', 'quantity', 'price', 'book_id')
-        ->where('user_id', Auth::id())
-        ->get();
+            ->where('user_id', Auth::id())
+            ->get();
+            // カート削除
+            $cu = Cart::where('user_id', Auth::id())->delete();
         }
 
         // 小計
@@ -206,6 +244,10 @@ class PurchaseController extends Controller
 
         //メール送信
         Mail::send(new Purchase($name, $order_date, $carts, $sub_total, $total_quantity));
+
+        
+        //セッション全削除
+        session()->flush();
 
         return view('checkout', compact('name', 'order_date', 'carts', 'sub_total', 'total_quantity'));
     }
