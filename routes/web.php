@@ -16,10 +16,12 @@ Auth::routes();
 Route::get('login/google', 'Auth\LoginController@redirectToGoogle');
 Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
 
-Route::get('auth/edit', 'UserController@edit')->name('auth.edit');
-Route::post('auth/update', 'UserController@update');
-Route::get('auth/delete', 'UserController@show')->name('auth.delete');
-Route::get('auth/destroy', 'UserController@destroy')->name('auth_destroy');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('auth/edit', 'UserController@edit')->name('auth.edit');
+    Route::post('auth/update', 'UserController@update');
+    Route::get('auth/delete', 'UserController@show')->name('auth.delete');
+    Route::get('auth/destroy', 'UserController@destroy')->name('auth_destroy');
+});
 
 Route::get('/', 'BookController@index')->name('index');
 Route::get('books_genre', 'BookController@booksGenre');
