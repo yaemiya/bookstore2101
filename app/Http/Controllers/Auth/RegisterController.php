@@ -55,7 +55,6 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'postal_code' => ['nullable', 'string', 'digits:7'],
             'address' => ['nullable', 'string'],
-            // 'building' => ['nullable', 'string'],
             'tel' => ['nullable', 'string', 'digits_between:10,11'],
         ]);
     }
@@ -77,13 +76,6 @@ class RegisterController extends Controller
         );
 
         $user = User::where('email', $data['email'])->first();
-
-        // nullエラー防止
-        // isset($data['postal_code']) ? $data['postal_code'] : '';
-        // isset($data['region']) ? $data['region'] : '';
-        // isset($data['address']) ? $data['address'] : '';
-        // isset($data['building']) ? $data['building'] : '';
-        // isset($data['tel']) ? $data['tel'] : '';
 
         $address =Address::create(
             [
